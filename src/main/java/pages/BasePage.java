@@ -7,9 +7,22 @@ public class BasePage {
 
     WebDriver driver;
 
-    public BasePage (WebDriver driver){
+    public BasePage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
     }
+
+    public void implicitWait(long timeToWait) {
+        driver.manage().timeouts().implicitlyWait(timeToWait, SECONDS);
+    }
+
+    public void waitForPageLoadComplete(long timeToWait) {
+        new WebDriverWait(driver, timeToWait).until(
+                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+    }
+    public void waitVisibilityOfElement(long timeToWait, By locator) {
+        WebDriverWait wait = new WebDriverWait(driver, timeToWait);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
 
 }
